@@ -17,10 +17,10 @@
 
     const CONFIG = {
         WEBHOOKS: {
-            ACOES: "https://discord.com/api/webhooks/1438189798849384560/lote5LpQxF80SDUZ3QdPOj2aHiQ7JtcJWKfTNxErKA0MjhDdQ86vruN74dnNUy0YMowD",
-            VENDAS: "https://discord.com/api/webhooks/1434731757953093662/gElahX6G0yY6h-DVQx1RQ8wOu6IJGi-k2M20fEVOgNBy-WT3ztobwuPspLB6hLaeAy6z",
-            LOGS_ACOES: "https://discord.com/api/webhooks/1478066884514545907/n2nF06DqEdPdvkORKyuScg2WVkCQzu_opZxaoqMjrCy7403YwKg3YH9XnRtc_U1B5f50",
-            LOGS_VENDAS: "https://discord.com/api/webhooks/1478066978374811871/tyxC5DrrDJxWlwigS2d-s-Xl04sTDtHVR-53ISuVXzMrRpN1G8YPsXwjkXpKBj4BoKkQ"
+            ACOES: "NAO TEM",
+            VENDAS: "NAO TEM",
+            LOGS_ACOES: "NAO TEM",
+            LOGS_VENDAS: "NAO TEM"
         }
     };
 
