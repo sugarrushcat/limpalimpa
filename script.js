@@ -73,21 +73,21 @@
             if (tabId === 'estatisticas' && this.state.isAdmin) this.loadDashboard();
         },
 
-        // --- SISTEMA DE MÁSCARA DE MOEDA (NOVO) ---
+
         maskCurrency(e) {
-            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+            let value = e.target.value.replace(/\D/g, ''); 
             if (value === "") {
                 e.target.value = "";
                 return;
             }
-            // Formata com separador de milhar (ex: 1000000 -> 1.000.000)
+
             e.target.value = parseInt(value, 10).toLocaleString('pt-BR');
         },
 
         getNumericValue(id) {
             let el = document.getElementById(id);
             if (!el || !el.value) return 0;
-            // Remove os pontos para conseguir converter pra número e fazer os cálculos
+
             let cleanStr = el.value.replace(/\./g, '').replace(',', '.');
             return parseFloat(cleanStr) || 0;
         },
@@ -96,7 +96,7 @@
             const f = (v) => "R$ " + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             let idPrefix = ['35','40','com'].includes(type) ? `w${type}` : (type === 'pers' ? 'wp' : 'wbau');
             
-            // Usa a nova função que limpa os pontos do texto
+
             let v = this.getNumericValue(`${idPrefix}-input`);
 
             let mats = Math.ceil((v / 100000) * 11);
@@ -175,7 +175,7 @@
             const id = this.state.selectedItemId;
             if (!id) return this.showToast('Selecione uma operação', 'error');
             
-            // Usa a função para pegar o número real
+
             const val = this.getNumericValue('venda-valor');
             if (val <= 0) return this.showToast('Digite um valor válido', 'error');
             
