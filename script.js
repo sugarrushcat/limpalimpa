@@ -73,14 +73,12 @@
             if (tabId === 'estatisticas' && this.state.isAdmin) this.loadDashboard();
         },
 
-
         maskCurrency(e) {
             let value = e.target.value.replace(/\D/g, ''); 
             if (value === "") {
                 e.target.value = "";
                 return;
             }
-
             e.target.value = parseInt(value, 10).toLocaleString('pt-BR');
         },
 
@@ -96,7 +94,6 @@
             const f = (v) => "R$ " + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             let idPrefix = ['35','40','com'].includes(type) ? `w${type}` : (type === 'pers' ? 'wp' : 'wbau');
             
-
             let v = this.getNumericValue(`${idPrefix}-input`);
 
             let mats = Math.ceil((v / 100000) * 11);
@@ -175,7 +172,6 @@
             const id = this.state.selectedItemId;
             if (!id) return this.showToast('Selecione uma operação', 'error');
             
-
             const val = this.getNumericValue('venda-valor');
             if (val <= 0) return this.showToast('Digite um valor válido', 'error');
             
@@ -332,7 +328,7 @@
             const color = resultado === 'Vitória' ? 3066993 : 15158332;
 
             const embedMainAcao = {
-                username: "TrojanHelper",
+                username: "Zigos",
                 embeds: [{
                     title: `Registro de Ação: ${tipo}`, color: color,
                     fields: [
@@ -348,9 +344,9 @@
                 this.state.participants.clear(); this.renderParticipants();
             });
 
-            if (CONFIG.WEBHOOKS.LOGS_ACOES) {
+            if (CONFIG.WEBHOOKS.LOGS_ACOES !== "NAO TEM") {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_ACOES, {
-                    username: "Zigo Log", embeds: [{ color: color, description: `**Ação:** ${tipo}\n**Data:** ${dataF}\n**Hora:** ${hora}\n**Resultado:** ${resultado}` }]
+                    username: "Zigos Log", embeds: [{ color: color, description: `**Ação:** ${tipo}\n**Data:** ${dataF}\n**Hora:** ${hora}\n**Resultado:** ${resultado}` }]
                 });
             }
         },
@@ -376,7 +372,7 @@
 
             try {
                 if (window.db) {
-                    await window.db.collection("vendas_zigo").add(vendaData);
+                    await window.db.collection("vendas_zigos").add(vendaData);
                     this.showToast("Lavagem salva no Banco!");
                     this.clearCart();
                     if (this.state.isAdmin) this.loadDashboard();
@@ -384,7 +380,7 @@
             } catch (e) { this.showToast("Erro ao salvar no banco", "error"); }
 
             const embedVenda = {
-                username: "Zigo",
+                username: "Zigos",
                 embeds: [{
                     title: "Lavagem Registrada", color: 1076026,
                     fields: [
@@ -404,9 +400,9 @@
 
             this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda);
             
-            if (CONFIG.WEBHOOKS.LOGS_VENDAS) {
+            if (CONFIG.WEBHOOKS.LOGS_VENDAS !== "NAO TEM") {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_VENDAS, {
-                    username: "Zigo Log", embeds: [{ color: 1076026, description: `**Cliente:** ${faccao}\n**Operações:**\n${itensFormatados}\n**Data:** ${this.formatDate(dataInput)} às ${horaInput}` }]
+                    username: "Zigos Log", embeds: [{ color: 1076026, description: `**Cliente:** ${faccao}\n**Operações:**\n${itensFormatados}\n**Data:** ${this.formatDate(dataInput)} às ${horaInput}` }]
                 });
             }
         }, 
@@ -419,7 +415,7 @@
                 const dataInicio = new Date(`${this.dom['filtro-inicio'].value}T00:00:00`);
                 const dataFim = new Date(`${this.dom['filtro-fim'].value}T23:59:59`);
 
-                const snapshot = await window.db.collection("vendas_trojan").where("data", ">=", dataInicio).where("data", "<=", dataFim).get();
+                const snapshot = await window.db.collection("vendas_zigos").where("data", ">=", dataInicio).where("data", "<=", dataFim).get();
 
                 let totalOps = 0, faturamento = 0, totalBruto = 0, totalMaq = 0, itemCounts = {};
 
