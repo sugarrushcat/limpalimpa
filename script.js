@@ -1,20 +1,4 @@
 (function() {
-    const firebaseConfig = {
-        apiKey: "",
-        authDomain: "",
-        projectId: "",
-        storageBucket: "",
-        messagingSenderId: "826944316857",
-        appId: "1:826944316857:web:143f3519b5b70134fb4268"
-    };
-
-    try {
-        firebase.initializeApp(firebaseConfig);
-        window.db = firebase.firestore();
-    } catch (error) {
-        console.error("Erro ao iniciar Firebase:", error);
-    }
-
     const CONFIG = {
         WEBHOOKS: {
             ACOES: "https://discord.com/api/webhooks/1500271163090276362/4su-b6yUy4GISMOW_xd9pZfvIzyNYA9b26lAQwmjTbFXw64Q0a2uRg_kNtJmSZvbHlhc",
@@ -129,7 +113,6 @@
             btn.innerText = 'Estatísticas';
             btn.onclick = (e) => app.switchTab('estatisticas', e);
             nav.insertBefore(btn, nav.lastElementChild);
-            this.loadDashboard();
         },
 
         copyAdText(el) { navigator.clipboard.writeText(el.innerText).then(() => this.showToast("Copiado!")); },
@@ -311,7 +294,7 @@
                 await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
                 if (msg) this.showToast(msg);
                 if (cb) cb();
-            } catch (e) { this.showToast("Erro de conexão", "error"); }
+            } catch (e) { this.showToast("Erro de conexão com o Discord", "error"); }
         },
 
         sendActionWebhook() {
@@ -368,17 +351,6 @@
                 return `- ${i.name} | Valor: R$ ${i.val.toLocaleString('pt-BR')}`;
             }).join('\n');
 
-            const vendaData = { vendedor, faccao, itens: [...this.state.cart], data: new Date(`${dataInput}T${horaInput}`), total: totalBruto, lucroFaccao: totalFac, maquina: totalMaq };
-
-            try {
-                if (window.db) {
-                    await window.db.collection("vendas_zigos").add(vendaData);
-                    if (this.state.isAdmin) this.loadDashboard();
-                }
-            } catch (e) {
-                console.error("Firebase não configurado ou erro no banco.");
-            }
-
             const embedVenda = {
                 username: "Zigos",
                 embeds: [{
@@ -398,6 +370,7 @@
                 }]
             };
 
+
             this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda, "Registro enviado com sucesso!", () => {
                 this.clearCart();
             });
@@ -410,36 +383,8 @@
         }, 
 
         async loadDashboard() {
-            if (!this.dom['stat-total-vendas'] || !window.db) return;
-            this.dom['stats-top-itens'].innerHTML = '<p class="text-muted italic">Carregando...</p>';
 
-            try {
-                const dataInicio = new Date(`${this.dom['filtro-inicio'].value}T00:00:00`);
-                const dataFim = new Date(`${this.dom['filtro-fim'].value}T23:59:59`);
-
-                const snapshot = await window.db.collection("vendas_zigos").where("data", ">=", dataInicio).where("data", "<=", dataFim).get();
-
-                let totalOps = 0, faturamento = 0, totalBruto = 0, totalMaq = 0, itemCounts = {};
-
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    totalOps++; faturamento += (data.lucroFaccao || 0); totalBruto += (data.total || 0); totalMaq += (data.maquina || 0);
-                    if (data.itens) {
-                        data.itens.forEach(item => { itemCounts[item.name] = (itemCounts[item.name] || 0) + 1; });
-                    }
-                });
-
-                this.dom['stat-total-vendas'].innerText = totalOps;
-                this.dom['stat-faturamento'].innerText = `R$ ${faturamento.toLocaleString('pt-BR')}`;
-                if(this.dom['stat-total-maq']) this.dom['stat-total-maq'].innerText = `R$ ${totalMaq.toLocaleString('pt-BR')}`;
-                if(this.dom['stat-total-bruto']) this.dom['stat-total-bruto'].innerText = `R$ ${totalBruto.toLocaleString('pt-BR')}`;
-
-                const sortedItems = Object.entries(itemCounts).sort(([, a], [, b]) => b - a).slice(0, 5);
-                this.dom['stats-top-itens'].innerHTML = sortedItems.length ? sortedItems.map(([n, q]) => `<div class="top-item"><span>${n}</span><span class="top-item-qtd">${q}x</span></div>`).join('') : '<p class="text-muted italic text-center">Nenhuma operação no período.</p>';
-                
-            } catch (e) {
-                this.dom['stats-top-itens'].innerHTML = '<p class="text-muted italic" style="color:#ef4444;">Erro de permissão no Firebase.</p>';
-            }
+            this.dom['stats-top-itens'].innerHTML = '<p class="text-muted italic text-center">Dashboard desativado (Sistema operando sem Banco de Dados).</p>';
         }
     };
 
