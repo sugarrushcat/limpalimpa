@@ -350,7 +350,7 @@
 
             if (CONFIG.WEBHOOKS.LOGS_ACOES) {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_ACOES, {
-                    username: "Trojan Log", embeds: [{ color: color, description: `**Ação:** ${tipo}\n**Data:** ${dataF}\n**Hora:** ${hora}\n**Resultado:** ${resultado}` }]
+                    username: "Zigo Log", embeds: [{ color: color, description: `**Ação:** ${tipo}\n**Data:** ${dataF}\n**Hora:** ${hora}\n**Resultado:** ${resultado}` }]
                 });
             }
         },
@@ -376,7 +376,7 @@
 
             try {
                 if (window.db) {
-                    await window.db.collection("vendas_trojan").add(vendaData);
+                    await window.db.collection("vendas_zigo").add(vendaData);
                     this.showToast("Lavagem salva no Banco!");
                     this.clearCart();
                     if (this.state.isAdmin) this.loadDashboard();
@@ -384,7 +384,7 @@
             } catch (e) { this.showToast("Erro ao salvar no banco", "error"); }
 
             const embedVenda = {
-                username: "TrojanHelper",
+                username: "Zigo",
                 embeds: [{
                     title: "Lavagem Registrada", color: 1076026,
                     fields: [
@@ -406,7 +406,7 @@
             
             if (CONFIG.WEBHOOKS.LOGS_VENDAS) {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_VENDAS, {
-                    username: "Trojan Log", embeds: [{ color: 1076026, description: `**Cliente:** ${faccao}\n**Operações:**\n${itensFormatados}\n**Data:** ${this.formatDate(dataInput)} às ${horaInput}` }]
+                    username: "Zigo Log", embeds: [{ color: 1076026, description: `**Cliente:** ${faccao}\n**Operações:**\n${itensFormatados}\n**Data:** ${this.formatDate(dataInput)} às ${horaInput}` }]
                 });
             }
         }, 
