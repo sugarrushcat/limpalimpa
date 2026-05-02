@@ -1,9 +1,9 @@
 (function() {
     const firebaseConfig = {
-        apiKey: "AIzaSyBmfbbuI02_UFirRXRGSmo0fU9ZekQ2Egw",
-        authDomain: "trojan-stats.firebaseapp.com",
-        projectId: "trojan-stats",
-        storageBucket: "trojan-stats.firebasestorage.app",
+        apiKey: "",
+        authDomain: "",
+        projectId: "",
+        storageBucket: "",
         messagingSenderId: "826944316857",
         appId: "1:826944316857:web:143f3519b5b70134fb4268"
     };
