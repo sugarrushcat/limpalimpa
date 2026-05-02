@@ -17,8 +17,8 @@
 
     const CONFIG = {
         WEBHOOKS: {
-            ACOES: "NAO TEM",
-            VENDAS: "NAO TEM",
+            ACOES: "https://discord.com/api/webhooks/1500271163090276362/4su-b6yUy4GISMOW_xd9pZfvIzyNYA9b26lAQwmjTbFXw64Q0a2uRg_kNtJmSZvbHlhc",
+            VENDAS: "https://discord.com/api/webhooks/1500271084107468902/eQKJInfwlZNtBKNIrPnpTC_DkcS78GPPvnXOLMRHCTbYPFtSqVsVEGCoM8eHvhnqJHO_",
             LOGS_ACOES: "NAO TEM",
             LOGS_VENDAS: "NAO TEM"
         }
