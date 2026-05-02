@@ -12,7 +12,7 @@
         firebase.initializeApp(firebaseConfig);
         window.db = firebase.firestore();
     } catch (error) {
-        console.error(error);
+        console.error("Erro ao iniciar Firebase:", error);
     }
 
     const CONFIG = {
@@ -373,11 +373,11 @@
             try {
                 if (window.db) {
                     await window.db.collection("vendas_zigos").add(vendaData);
-                    this.showToast("Lavagem salva no Banco!");
-                    this.clearCart();
                     if (this.state.isAdmin) this.loadDashboard();
                 }
-            } catch (e) { this.showToast("Erro ao salvar no banco", "error"); }
+            } catch (e) {
+                console.error("Firebase não configurado ou erro no banco.");
+            }
 
             const embedVenda = {
                 username: "Zigos",
@@ -398,7 +398,9 @@
                 }]
             };
 
-            this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda);
+            this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda, "Registro enviado com sucesso!", () => {
+                this.clearCart();
+            });
             
             if (CONFIG.WEBHOOKS.LOGS_VENDAS !== "NAO TEM") {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_VENDAS, {
