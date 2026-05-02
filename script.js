@@ -113,6 +113,7 @@
             btn.innerText = 'Estatísticas';
             btn.onclick = (e) => app.switchTab('estatisticas', e);
             nav.insertBefore(btn, nav.lastElementChild);
+            this.loadDashboard();
         },
 
         copyAdText(el) { navigator.clipboard.writeText(el.innerText).then(() => this.showToast("Copiado!")); },
@@ -289,12 +290,13 @@
         },
         handleEnterParticipant(e) { if (e.key === 'Enter') this.addParticipant(); },
 
-        async sendWebhook(url, payload, msg, cb) {
+        // Modificado para rodar em background e não travar o fluxo visual
+        sendWebhook(url, payload) {
             try {
-                await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-                if (msg) this.showToast(msg);
-                if (cb) cb();
-            } catch (e) { this.showToast("Erro de conexão com o Discord", "error"); }
+                fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+            } catch (e) {
+                console.error("Erro Discord", e);
+            }
         },
 
         sendActionWebhook() {
@@ -323,9 +325,12 @@
                 }]
             };
 
-            this.sendWebhook(CONFIG.WEBHOOKS.ACOES, embedMainAcao, "Ação registrada!", () => {
-                this.state.participants.clear(); this.renderParticipants();
-            });
+            // Avisa, limpa o painel na hora e envia em background
+            this.showToast("Ação registrada com sucesso!");
+            this.state.participants.clear(); 
+            this.renderParticipants();
+
+            this.sendWebhook(CONFIG.WEBHOOKS.ACOES, embedMainAcao);
 
             if (CONFIG.WEBHOOKS.LOGS_ACOES !== "NAO TEM") {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_ACOES, {
@@ -334,7 +339,7 @@
             }
         },
 
-        async sendSaleWebhook() {
+        sendSaleWebhook() {
             const vendedor = this.dom['venda-vendedor'].value.trim();
             const faccao = this.dom['venda-faccao'].value.trim();
             const dataInput = this.dom['venda-data'].value.trim();
@@ -371,9 +376,11 @@
             };
 
 
-            this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda, "Registro enviado com sucesso!", () => {
-                this.clearCart();
-            });
+            this.showToast("Registro enviado com sucesso!");
+            this.clearCart();
+
+
+            this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda);
             
             if (CONFIG.WEBHOOKS.LOGS_VENDAS !== "NAO TEM") {
                 this.sendWebhook(CONFIG.WEBHOOKS.LOGS_VENDAS, {
@@ -382,8 +389,7 @@
             }
         }, 
 
-        async loadDashboard() {
-
+        loadDashboard() {
             this.dom['stats-top-itens'].innerHTML = '<p class="text-muted italic text-center">Dashboard desativado (Sistema operando sem Banco de Dados).</p>';
         }
     };
