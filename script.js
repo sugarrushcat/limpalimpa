@@ -11,7 +11,6 @@
     const WASH_TYPES = {
         '35': { name: "Lavagem 35%", type: "padrao", pMaq: 0.20, pLuc: 0.15, pCli: 0.65 },
         '40': { name: "Lavagem 40%", type: "padrao", pMaq: 0.20, pLuc: 0.20, pCli: 0.60 },
-        'com': { name: "Comissão", type: "padrao", pMaq: 0.10, pLuc: 0.30, pCli: 0.60 },
         'pers': { name: "Lavagem Pessoal", type: "pessoal" },
         'bau': { name: "Coisas do Baú", type: "pessoal" }
     };
@@ -76,7 +75,7 @@
 
         calcWash(type) {
             const f = (v) => "R$ " + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            let idPrefix = ['35','40','com'].includes(type) ? `w${type}` : (type === 'pers' ? 'wp' : 'wbau');
+            let idPrefix = ['35','40'].includes(type) ? `w${type}` : (type === 'pers' ? 'wp' : 'wbau');
             
             let v = this.getNumericValue(`${idPrefix}-input`);
 
@@ -84,7 +83,7 @@
             let matsDisplay = document.getElementById(`${idPrefix}-mats`);
             if (matsDisplay) matsDisplay.innerText = `Materiais: ${mats} Papel | ${mats} Tinta`;
 
-            if (['35','40','com'].includes(type)) {
+            if (['35','40'].includes(type)) {
                 let wt = WASH_TYPES[type];
                 let lucroTotal = v * wt.pLuc;
                 let comissaoUser = lucroTotal * 0.30;
@@ -290,7 +289,6 @@
         },
         handleEnterParticipant(e) { if (e.key === 'Enter') this.addParticipant(); },
 
-        // Modificado para rodar em background e não travar o fluxo visual
         sendWebhook(url, payload) {
             try {
                 fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -325,7 +323,6 @@
                 }]
             };
 
-            // Avisa, limpa o painel na hora e envia em background
             this.showToast("Ação registrada com sucesso!");
             this.state.participants.clear(); 
             this.renderParticipants();
@@ -375,10 +372,8 @@
                 }]
             };
 
-
             this.showToast("Registro enviado com sucesso!");
             this.clearCart();
-
 
             this.sendWebhook(CONFIG.WEBHOOKS.VENDAS, embedVenda);
             
