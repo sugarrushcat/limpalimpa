@@ -93,7 +93,8 @@
                 document.getElementById(`${idPrefix}-com`).innerText = f(comissaoUser);
                 document.getElementById(`${idPrefix}-cli`).innerText = f(v * wt.pCli);
             } else {
-                let maq = v * 0.10; let res = v - maq;
+                let maq = v * 0.20; // Ajustado para 20%
+                let res = v - maq;
                 let seuLucro = res * 0.70;
                 document.getElementById(`${idPrefix}-maq`).innerText = f(maq);
                 document.getElementById(`${idPrefix}-res`).innerText = f(res);
@@ -169,7 +170,7 @@
                 cliente = val * wt.pCli;
                 fac = caixa; 
             } else {
-                maq = val * 0.10;
+                maq = val * 0.20; // Ajustado para 20%
                 let res = val - maq;
                 fac = res * 0.30;
                 cliente = res * 0.70;
