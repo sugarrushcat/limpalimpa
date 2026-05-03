@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Painel Zigos - Gestão</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22 fill=%22%23106B3A%22 font-family=%22sans-serif%22 font-weight=%22bold%22>ZIG</text></svg>">
 </head>
 <body>
 
 <header>
     <div class="header-top">
-        <h1>Painel Zigos</h1>
+        <h1>Painel Zigos <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; vertical-align: middle; letter-spacing: 0;">v1.0</span></h1>
         <div class="header-controls">
             <div id="btn-admin-secret" class="system-status" onclick="app.toggleAdmin()" title="Clique para liberar acesso Admin">
                 <span class="status-dot"></span> Sistema Online
@@ -134,22 +134,6 @@
         </div>
 
         <div class="card">
-            <h3 style="color: var(--primary); text-transform: uppercase; margin-bottom: 15px; text-align: center;">Comissão</h3>
-            <div class="form-group">
-                <label>Valor para Lavar (R$)</label>
-                <input type="text" id="wcom-input" placeholder="Ex: 1.000.000" oninput="app.maskCurrency(event); app.calcWash('com')">
-                <div id="wcom-mats" class="wash-mats-info">Materiais: 0 Papel | 0 Tinta</div>
-            </div>
-            <div class="wash-results">
-                <div class="wash-item"><span>Máquina</span><b id="wcom-maq">R$ 0,00</b></div>
-                <div class="wash-item"><span>Lucro</span><b id="wcom-luc">R$ 0,00</b></div>
-                <div class="wash-item"><span>Caixa</span><b id="wcom-cax">R$ 0,00</b></div>
-                <div class="wash-item"><span>Comissão</span><b id="wcom-com">R$ 0,00</b></div>
-                <div class="wash-item highlight"><span>Cliente</span><b id="wcom-cli">R$ 0,00</b></div>
-            </div>
-        </div>
-
-        <div class="card">
             <h3 style="color: var(--success); text-transform: uppercase; margin-bottom: 15px; text-align: center;">Lavagem Pessoal</h3>
             <div class="form-group">
                 <label>Valor (R$)</label>
@@ -186,7 +170,10 @@
         <div class="cart-header" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
             <h2 style="margin: 0;">Dashboard (ADMIN)</h2>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <button class="btn btn-small" onclick="app.loadDashboard()" style="padding: 0 15px;">Atualizar</button>
+                <input type="date" id="filtro-inicio" style="padding: 8px; width: auto; font-size: 0.85rem;">
+                <span class="text-muted">até</span>
+                <input type="date" id="filtro-fim" style="padding: 8px; width: auto; font-size: 0.85rem;">
+                <button class="btn btn-small" onclick="app.loadDashboard()" style="padding: 0 15px;">Filtrar</button>
             </div>
         </div>
         <p class="text-muted text-center mb-15 mt-15">As estatísticas locais não estão salvas em nuvem.</p>
@@ -270,7 +257,7 @@
             </div>
             <div id="lista-participantes" class="participants-list"></div>
         </div>
-        <button class="btn btn-primary" onclick="app.sendActionWebhook()">Enviar Registro (Discord)</button>
+        <button class="btn btn-primary" onclick="app.sendActionWebhook()">Enviar Registro</button>
     </div>
 </div>
 
@@ -286,6 +273,6 @@ LAVAGEM ON: Sua sujeira será abduzida! 🛸💦 >> Area51 <<
 <div id="toast-container"></div>
 <img src="gatinho.gif" alt="Mascote Gatinho" class="site-mascot">
 
-<script src="script.js"></script>
+<script src="script.js?v=1.0"></script>
 </body>
 </html>
